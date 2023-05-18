@@ -35,10 +35,11 @@ namespace QuadIntegraLogic
                 double sum = 0;
                 double spacing = (this.b - this.a) / subintervals;
                 Debug.WriteLine("***********************");
+                Debug.WriteLine($"Divide into {subintervals} subregions");
                 for (int i = 0; i < subintervals; i++)
                 {
                     double contribution = Kernel(a + i * spacing, a + (i + 1) * spacing);
-                    Debug.WriteLine($"Contribution={contribution}");
+                    Debug.WriteLine($"[{a + i * spacing}; {a + (i + 1) * spacing}] ==> {contribution}");
                     sum += contribution;
                 }
                 Debug.WriteLine($"Subintervals={subintervals}; sum={sum}");

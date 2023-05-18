@@ -19,12 +19,14 @@ namespace QuadIntegraLogic
         protected override double Kernel(double a, double b)
         {
             double sum = 0;
-            (double, double)[] data = integratorInfo.LogicAPI.DataAPI.GetGLQuadratureData(integratorInfo.QuadratureNodesNumber, a, b); 
-            for(int i=0; i<integratorInfo.QuadratureNodesNumber; i++)
+            (double, double)[] data = integratorInfo.LogicAPI.DataAPI.GetGLQuadratureData(integratorInfo.QuadratureNodesNumber, a, b);
+            double h = 0.5 * (b - a);
+            for (int i=0; i<integratorInfo.QuadratureNodesNumber; i++)
             {
-                sum += data[i].Item1 * base.f(data[i].Item2);
+                double node = a + h * (data[i].Item2 + 1);
+                sum += data[i].Item1 * base.f(node);
             }
-            return sum;
+            return sum / h;
         }
     }
 }

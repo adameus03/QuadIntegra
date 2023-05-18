@@ -48,9 +48,11 @@ namespace QuadIntegraData
                     
                     line = regex.Replace(line, " ");
                     string[] lineParts = line.Split(' ');
-                    char culprit = Convert.ToChar(0x2E);
-                    //Debug.WriteLine($"{lineParts[0]} & {lineParts[2]}");
-                    data[i] = (a+0.5*(Convert.ToDouble(lineParts[1].Replace(culprit,','))+1)*(b-a), Convert.ToDouble(lineParts[2].Replace(culprit,',')));
+                    
+                    data[i] = (
+                        Convert.ToDouble(lineParts[1].Replace('.', ',')), 
+                        Convert.ToDouble(lineParts[2].Replace('.', ','))
+                    );
                 }
             }
             return data;
