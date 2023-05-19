@@ -26,7 +26,7 @@ namespace QuadIntegraLogic
                 double node = a + h * (data[i].Item2 + 1);
                 sum += data[i].Item1 * base.f(node);
             }
-            return sum / h;
+            return h * sum;
         }
     }
 }
