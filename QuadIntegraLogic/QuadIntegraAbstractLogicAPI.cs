@@ -14,7 +14,11 @@
             return new QuadIntegraLogicAPI(dataAPI ?? QuadIntegraData.QuadIntegraAbstractDataAPI.CreateInstance());
         }
 
-
+        public event EventHandler<QuadIntegraData.ComputationDumpEventArgs> ComputationDump;
+        protected void OnComputationDump(object? sender, QuadIntegraData.ComputationDumpEventArgs computationDumpEventArgs)
+        {
+            this.ComputationDump?.Invoke(sender, computationDumpEventArgs);
+        }
 
         public abstract double Integrate<TIntegrator>(int functionIndex, double integrationLeftBound, 
                                                       double integrationRightBound, double desiredAccuracy, IntegratorInfo? integratorInfo = null) where TIntegrator : Integrator;

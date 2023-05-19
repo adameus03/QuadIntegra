@@ -57,7 +57,14 @@ namespace QuadIntegra
 
             this.terminalLines.Add("Welcome to QuadIntegra quadrature method function integrator");
 
+            this.model.ComputationMonitorSignalReceived += Model_ComputationMonitorSignalReceived;
+
             this.Plot();
+        }
+
+        private void Model_ComputationMonitorSignalReceived(object? sender, QuadIntegraData.ComputationDumpEventArgs e)
+        {
+            this.terminalLines.Add(e.Line);
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -68,10 +75,10 @@ namespace QuadIntegra
 
         private void TerminalLines_CollectionChanged(object? sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (terminalLines.Count > 20)
+            /*if (terminalLines.Count > 20)
             {
                 terminalLines.RemoveAt(0);
-            }
+            }*/
             this.terminalText = String.Join('\n', this.terminalLines);
             OnPropertyChanged(nameof(TerminalText));
         }

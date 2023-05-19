@@ -12,6 +12,29 @@
     <Window.DataContext>
         <local:ViewModel/>
     </Window.DataContext>
+    <Window.Resources>
+        <Style x:Key="ConsoleTextBox" TargetType="{x:Type TextBox}">
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TextBox">
+                        <ScrollViewer RenderTransformOrigin="0.5,0.5" VerticalScrollBarVisibility="Auto">
+                            <ScrollViewer.RenderTransform>
+                                <ScaleTransform ScaleY="-1"/>
+                            </ScrollViewer.RenderTransform>
+                            <TextBox Text="{TemplateBinding Text}" RenderTransformOrigin="0.5,0.5" Background="Black" Foreground="LawnGreen" FontFamily="Consolas" TextWrapping="Wrap">
+                                <TextBox.RenderTransform>
+                                    <ScaleTransform ScaleY="-1"/>
+                                </TextBox.RenderTransform>
+                            </TextBox>
+                        </ScrollViewer>
+                        
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -52,11 +75,18 @@
                     <controls:FormulaControl Formula="f(x)=3x-5"/>
                 </ComboBoxItem>
                 <ComboBoxItem>
-                    <controls:FormulaControl Formula="f(x)=|x|"/>
-                </ComboBoxItem>
-                <ComboBoxItem>
                     <controls:FormulaControl Formula="f(x)=x^3+x^2-2x-1"/>
                 </ComboBoxItem>
+                <ComboBoxItem>
+                    <controls:FormulaControl Formula="f(x)=x^4+x^2-2x+1"/>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <controls:FormulaControl Formula="f(x)=x^6-x^3-2x-1"/>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <controls:FormulaControl Formula="f(x)=|x|"/>
+                </ComboBoxItem>
+
                 <ComboBoxItem>
                     <controls:FormulaControl Formula="f(x)=\cos x"/>
                 </ComboBoxItem>
@@ -64,7 +94,13 @@
                     <controls:FormulaControl Formula="f(x)=\cos^2(2x^2)-|\sin x^2|"/>
                 </ComboBoxItem>
                 <ComboBoxItem>
-                    <controls:FormulaControl Formula="f(x)=\sin(|x+1|)+|x|^3-|x|"/>
+                    <controls:FormulaControl Formula="f(x)=e^{-x^2}"/>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <controls:FormulaControl Formula="f(x)=\ln{\frac{1}{|x|}}"/>
+                </ComboBoxItem>
+                <ComboBoxItem>
+                    <controls:FormulaControl Formula="f(x)=\ln{\frac{1}{|x+0.5|}}-\ln{\frac{1}{|x-0.5|}}"/>
                 </ComboBoxItem>
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
@@ -97,7 +133,7 @@
                 <TextBox VerticalAlignment="Center" Margin="5 0" FontSize="16" Text="{Binding IntegrationLeftBound, Mode=TwoWay}"/>
             </StackPanel>
         </StackPanel>
-        
+
         <StackPanel Grid.Row="5" Orientation="Vertical">
             <Label>Integration right bound:</Label>
             <StackPanel Orientation="Horizontal">
@@ -111,16 +147,16 @@
             <Button Margin="2 0" Command="{Binding IntegrateCommand}">Integrate!</Button>
             <Button Margin="2 0" Command="{Binding ClearTerminalCommand}">Clear terminal</Button>
         </StackPanel>
-        
+
         <Border Grid.Row="7" BorderBrush="AliceBlue" Margin="2 2 2 2" Visibility="Visible" BorderThickness="1">
-            <TextBox x:Name="console" TextWrapping="Wrap" Background="Black" Foreground="LawnGreen"  FontFamily="Consolas" Text="{Binding TerminalText, Mode=OneWay}"/>
+            <TextBox x:Name="console" Text="{Binding TerminalText, Mode=OneWay}" Style="{StaticResource ConsoleTextBox}"/>
         </Border>
 
         <oxyc:Plot Grid.Column="1" Grid.RowSpan="8" Model="{Binding Path=PlotModel, Mode=OneWay}">
 
         </oxyc:Plot>
-
     </Grid>
 </Window>
+
 
     

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QuadIntegraData;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,12 @@ namespace QuadIntegra
         public Model(QuadIntegraLogic.QuadIntegraAbstractLogicAPI? logicAPI = null)
         {
             this.logicAPI = logicAPI ?? QuadIntegraLogic.QuadIntegraAbstractLogicAPI.CreateInstance();
+            this.logicAPI.ComputationDump += LogicAPI_ComputationDump;
+        }
+
+        private void LogicAPI_ComputationDump(object? sender, ComputationDumpEventArgs e)
+        {
+            OnComputationMonitorSignalReceived(sender, e);
         }
 
         public void CalculateIntegralSimpson()
@@ -41,6 +48,12 @@ namespace QuadIntegra
         {
             return this.logicAPI.GetNodes(this.quadNodesNumber, this.leftBound, this.rightBound);
         }*/
+
+        public event EventHandler<ComputationDumpEventArgs> ComputationMonitorSignalReceived;
+        private void OnComputationMonitorSignalReceived(object? sender, ComputationDumpEventArgs computationDumpEventArgs)
+        {
+            this.ComputationMonitorSignalReceived?.Invoke(sender, computationDumpEventArgs);
+        }
 
 
         public double LeftBound { get => leftBound; set => leftBound = value; }

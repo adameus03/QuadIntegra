@@ -15,11 +15,15 @@ namespace QuadIntegraData
         private Func<double, double>[] functions =
         {
             new Func<double, double>((double x) => (3*x-5)),
-            new Func<double, double>((double x) => Math.Abs(x)),
             new Func<double, double>((double x) => x*(x*(x+1)-2)-1),
+            new Func<double, double>((double x) => x*(x*(x*x+1)-2)+1),
+            new Func<double, double>((double x) => x*(x*x*(x*x*x-1)-2)-1),
+            new Func<double, double>((double x) => Math.Abs(x)),
             new Func<double, double>((double x) => Math.Cos(x)),
             new Func<double, double>((double x) => Math.Cos(2*x*x)*Math.Cos(2*x*x)-Math.Abs(Math.Sin(x*x))),
-            new Func<double, double>((double x) => Math.Sin(Math.Abs(x+1))+Math.Abs(x)*(Math.Abs(x)*Math.Abs(x)-1))
+            new Func<double, double>((double x) => Math.Exp(-x*x)),
+            new Func<double, double>((double x) => -Math.Log(Math.Abs(x))),
+            new Func<double, double>((double x) => Math.Log(Math.Abs(x+0.5))-Math.Log(Math.Abs(x-0.5)))
         };
         public QuadIntegraDataAPI() : base() { }
 

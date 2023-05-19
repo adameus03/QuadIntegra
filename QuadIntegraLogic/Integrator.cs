@@ -24,31 +24,46 @@ namespace QuadIntegraLogic
         protected abstract double Kernel(double a, double b);
         public double Integrate()
         {
-            Debug.WriteLine("+++++++++++++++++++++++");
+            System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
+            watch.Start();
+            OnComputationDump("+++++++++++++++++++++++");
+
             double integral = Kernel(a, b);
-            Debug.WriteLine($"Subintervals=1; sum={integral}");
+            OnComputationDump($"Subintervals=1; sum={integral}");
+
             int subintervals = 1;
+            int iters = 0;
             double progress;
             do
             {
+                iters++;
                 subintervals *= 2;
                 double sum = 0;
                 double spacing = (this.b - this.a) / subintervals;
-                Debug.WriteLine("***********************");
-                Debug.WriteLine($"Divide into {subintervals} subregions");
+                OnComputationDump("***********************");
+
+                OnComputationDump($"Divide into {subintervals} subregions");
                 for (int i = 0; i < subintervals; i++)
                 {
                     double contribution = Kernel(a + i * spacing, a + (i + 1) * spacing);
-                    Debug.WriteLine($"[{a + i * spacing}; {a + (i + 1) * spacing}] ==> {contribution}");
+                    OnComputationDump($"[{a + i * spacing}; {a + (i + 1) * spacing}] ==> {contribution}");
                     sum += contribution;
                 }
-                Debug.WriteLine($"Subintervals={subintervals}; sum={sum}");
-                progress = integral - sum;
+                OnComputationDump($"Subintervals={subintervals}; sum={sum}");
+                progress = Math.Abs(integral - sum);
                 integral = sum;
             }
             while (progress > this.epsilon);
-            Debug.WriteLine("--------------------------");
+            OnComputationDump("--------------------------");
+            watch.Stop();
+            OnComputationDump($"I: {iters}, T: {watch.ElapsedMilliseconds} ms");
             return integral;
+        }
+        
+        public event EventHandler<QuadIntegraData.ComputationDumpEventArgs> ComputationDump;
+        private void OnComputationDump(string line)
+        {
+            this.ComputationDump?.Invoke(this, new QuadIntegraData.ComputationDumpEventArgs(line));
         }
     }
 }

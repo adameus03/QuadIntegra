@@ -25,7 +25,13 @@ namespace QuadIntegraLogic
             }
             else throw new TypeAccessException();
 
+            integrator.ComputationDump += Integrator_ComputationDump;
             return integrator.Integrate();
+        }
+
+        private void Integrator_ComputationDump(object? sender, ComputationDumpEventArgs e)
+        {
+            base.OnComputationDump(sender, e);
         }
     }
 }
