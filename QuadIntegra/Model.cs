@@ -49,7 +49,7 @@ namespace QuadIntegra
             return this.logicAPI.GetNodes(this.quadNodesNumber, this.leftBound, this.rightBound);
         }*/
 
-        public event EventHandler<ComputationDumpEventArgs> ComputationMonitorSignalReceived;
+        public event EventHandler<ComputationDumpEventArgs>? ComputationMonitorSignalReceived;
         private void OnComputationMonitorSignalReceived(object? sender, ComputationDumpEventArgs computationDumpEventArgs)
         {
             this.ComputationMonitorSignalReceived?.Invoke(sender, computationDumpEventArgs);

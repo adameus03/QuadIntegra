@@ -10,6 +10,7 @@ using System.Net.Http.Headers;
 using System.Runtime.CompilerServices;
 using System.Security.RightsManagement;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Interop;
@@ -64,7 +65,11 @@ namespace QuadIntegra
 
         private void Model_ComputationMonitorSignalReceived(object? sender, QuadIntegraData.ComputationDumpEventArgs e)
         {
-            this.terminalLines.Add(e.Line);
+            lock (this.terminalLines)
+            {
+                this.terminalLines.Add(e.Line);
+            }
+            
         }
 
         public event PropertyChangedEventHandler? PropertyChanged;
@@ -88,16 +93,16 @@ namespace QuadIntegra
             terminalLines.Clear();
         }
 
-        private void IntegrateCommand_ExecuteReceived(object? sender, EventArgs e)
+        private async void IntegrateCommand_ExecuteReceived(object? sender, EventArgs e)
         {
             this.terminalLines.Add("Calculating integral...");
             if(this.integrationMethodIndex == 0)
             {
-                this.model.CalculateIntegralSimpson();
+                await Task.Run(() => this.model.CalculateIntegralSimpson());
             }
             else
             {
-                this.model.CalculateIntegralGaussLegendre();
+                await Task.Run(() => this.model.CalculateIntegralGaussLegendre());
             }
             this.terminalLines.Add($"Result: {this.model.IntegralValue}");
         }

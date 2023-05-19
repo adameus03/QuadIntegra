@@ -26,7 +26,7 @@ namespace QuadIntegraLogic
         {
             System.Diagnostics.Stopwatch watch = new System.Diagnostics.Stopwatch();
             watch.Start();
-            OnComputationDump("+++++++++++++++++++++++");
+            OnComputationDump("++++++++++++++++++++++++++");
 
             double integral = Kernel(a, b);
             OnComputationDump($"Subintervals=1; sum={integral}");
@@ -40,27 +40,28 @@ namespace QuadIntegraLogic
                 subintervals *= 2;
                 double sum = 0;
                 double spacing = (this.b - this.a) / subintervals;
-                OnComputationDump("***********************");
 
-                OnComputationDump($"Divide into {subintervals} subregions");
+                //OnComputationDump("***********************");
+                //OnComputationDump($"Divide into {subintervals} subregions");
+
                 for (int i = 0; i < subintervals; i++)
                 {
                     double contribution = Kernel(a + i * spacing, a + (i + 1) * spacing);
-                    OnComputationDump($"[{a + i * spacing}; {a + (i + 1) * spacing}] ==> {contribution}");
+                    //OnComputationDump($"[{a + i * spacing}; {a + (i + 1) * spacing}] ==> {contribution}");
                     sum += contribution;
                 }
-                OnComputationDump($"Subintervals={subintervals}; sum={sum}");
+                OnComputationDump($"Subintervals=2^{iters}; sum={sum}");
                 progress = Math.Abs(integral - sum);
                 integral = sum;
             }
             while (progress > this.epsilon);
             OnComputationDump("--------------------------");
             watch.Stop();
-            OnComputationDump($"I: {iters}, T: {watch.ElapsedMilliseconds} ms");
+            OnComputationDump($"I: {iters}, T: {((double)watch.Elapsed.TotalMicroseconds)/1000.0} ms");
             return integral;
         }
         
-        public event EventHandler<QuadIntegraData.ComputationDumpEventArgs> ComputationDump;
+        public event EventHandler<QuadIntegraData.ComputationDumpEventArgs>? ComputationDump;
         private void OnComputationDump(string line)
         {
             this.ComputationDump?.Invoke(this, new QuadIntegraData.ComputationDumpEventArgs(line));

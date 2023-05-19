@@ -14,7 +14,7 @@
             return new QuadIntegraLogicAPI(dataAPI ?? QuadIntegraData.QuadIntegraAbstractDataAPI.CreateInstance());
         }
 
-        public event EventHandler<QuadIntegraData.ComputationDumpEventArgs> ComputationDump;
+        public event EventHandler<QuadIntegraData.ComputationDumpEventArgs>? ComputationDump;
         protected void OnComputationDump(object? sender, QuadIntegraData.ComputationDumpEventArgs computationDumpEventArgs)
         {
             this.ComputationDump?.Invoke(sender, computationDumpEventArgs);
